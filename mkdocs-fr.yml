@@ -1,0 +1,69 @@
+site_name: Espace d'analyse avancée du COVID-19
+site_url: https://statcan.github.io/daaas/fr/
+site_description: User guide for the DAaaS Covid-19 Platform
+copyright: Copyright &copy; 2020 Statistics Canada
+
+docs_dir: docs/fr
+site_dir: site/fr
+
+repo_name: StatCan/daaas
+repo_url: https://github.com/StatCan/daaas
+edit_uri: edit/master/docs/fr
+
+plugins:
+  - search:
+      lang: fr
+
+theme:
+  name: material
+  language: fr
+  #features:
+  #  - tabs
+  palette:
+    primary: indigo
+    accent: teal
+  show_sidebar: false
+  #logo: images/statcan.png
+
+markdown_extensions:
+  - toc:
+      baselevel: 2
+  - attr_list
+  - admonition
+  - codehilite
+  - mdx_truly_sane_lists
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/StatCan/daaas
+    - icon: fontawesome/brands/slack
+      link: https://statcan-eaa.slack.com
+
+# Page tree
+nav:
+  - Démarrage: index.md
+  - Analyse:
+      - Kubeflow: 1-Experiences/Kubeflow.md
+      - Jupyter: 1-Experiences/Jupyter.md
+      - RStudio: 1-Experiences/RStudio.md
+      - Bureau-Virtuel: 1-Experiences/Bureau-virtuel.md
+  - Publication:
+      - R Shiny: 2-Publication/R-Shiny.md
+      - Dash: 2-Publication/Dash.md
+      - Datasette: 2-Publication/Datasette.md
+      - Power BI: 2-Publication/PowerBI.md
+      - Sur mesure: 2-Publication/Sur-mesure.md
+  - Pipelines:
+      - Kubeflow Pipelines: 3-Pipelines/Kubeflow-Pipelines.md
+      - PaaS Integration: 3-Pipelines/PaaS.md
+      - Model Serving: 3-Pipelines/Serving.md
+  - Collaboration:
+      - Aperçu: 4-Collaboration/Aperçu.md
+      - Demander un espace de nom: 4-Collaboration/Demander-EspaceDeNom.md
+  - Stockage:
+      - Aperçu: 5-Stockage/Aperçu.md
+      - MinIo: 5-Stockage/MinIo.md
+      - Disque: 5-Stockage/Disque.md
+  - Aide/Contactez-nous: Aide.md

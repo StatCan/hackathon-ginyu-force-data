@@ -1,0 +1,44 @@
+site_name: NRCan Hackathon
+site_url: https://blairdrummond.github.io/test-flatdata/en/
+site_description: NRCan Hackathon
+copyright: Copyright &copy; 2020 Statistics Canada
+strict: true
+
+docs_dir: docs/en
+site_dir: site/en
+
+repo_name: blairdrummond/test-flatdata
+repo_url: https://github.com/blairdrummond/test-flatdata
+edit_uri: edit/master/docs/en
+
+theme:
+  name: material
+  language: en
+  #features:
+  #  - tabs
+  palette:
+    primary: indigo
+    accent: teal
+  show_sidebar: false
+  #logo: images/statcan.png
+
+markdown_extensions:
+  - toc:
+      baselevel: 2
+      permalink: true
+  - attr_list
+  - admonition
+  - codehilite
+  - mdx_truly_sane_lists
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/StatCan/daaas
+    - icon: fontawesome/brands/slack
+      link: https://statcan-aaw.slack.com
+
+# Page tree
+nav:
+  - Getting Started: index.md
