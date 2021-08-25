@@ -4,9 +4,8 @@ on:
     - cron: "0 0 * * *" # faily
   workflow_dispatch: {}
   push:
-    paths:
-      - .github/workflows/flat.yml # Only run a new workflow every time this file (flat.yaml) file changes
-      - excel/
+    branches:
+      - 'main'
 jobs:
   scheduled:
     runs-on: ubuntu-latest
