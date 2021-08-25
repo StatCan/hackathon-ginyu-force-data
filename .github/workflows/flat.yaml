@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - .github/workflows/flat.yml # Only run a new workflow every time this file (flat.yaml) file changes
+      - excel/
 jobs:
   scheduled:
     runs-on: ubuntu-latest
