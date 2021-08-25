@@ -12,5 +12,17 @@ const workbook = await readXLSX(inputFilename);
 const sheetData = workbook.Sheets[workbook.SheetNames[0]];
 const csvString = await xlsx.utils.sheet_to_csv(sheetData); // can use to_json, to_txt, to_html, to_formulae
 
+// install requirements with pip
+const pip_install = Deno.run({
+    cmd: ['python', '-m', 'pip', 'install', '-r', 'requirements.txt'],
+});
+
+await pip_install.status();
+
+// Forwards the execution to the python script
+const py_run = Deno.run({
+    cmd: ['python', './postprocess.py'].concat(Deno.args),
+});
+
 // write to csv
 await writeCSV(outputFilename, csvString);
