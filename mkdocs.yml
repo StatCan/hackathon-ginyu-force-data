@@ -1,15 +1,15 @@
 site_name: NRCan Hackathon
-site_url: https://blairdrummond.github.io/test-flatdata/en/
+site_url: https://blairdrummond.github.io/test-flatdata/
 site_description: NRCan Hackathon
 copyright: Copyright &copy; 2020 Statistics Canada
 strict: true
 
-docs_dir: docs/en
-site_dir: site/en
+docs_dir: docs/
+site_dir: site/
 
 repo_name: blairdrummond/test-flatdata
 repo_url: https://github.com/blairdrummond/test-flatdata
-edit_uri: edit/master/docs/en
+edit_uri: edit/master/docs/
 
 theme:
   name: material
