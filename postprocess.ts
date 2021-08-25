@@ -19,10 +19,16 @@ const pip_install = Deno.run({
 
 await pip_install.status();
 
+console.log("pip install successful");
+
 // Forwards the execution to the python script
 const py_run = Deno.run({
     cmd: ['python', './postprocess.py'].concat(Deno.args),
 });
+
+await py_run.status();
+
+console.log("python script successful?");
 
 // write to csv
 await writeCSV(outputFilename, csvString);
