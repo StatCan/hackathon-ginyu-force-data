@@ -15,14 +15,11 @@ const csvString = await xlsx.utils.sheet_to_csv(sheetData); // can use to_json, 
 // write to csv
 await writeCSV(outputFilename, csvString);
 
-// Remove the xlsx file
-const fs = require('fs')
-fs.unlink(inputFilename, (err) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-})
+// unlink the file
+const unlink = Deno.run({
+    cmd: ['rm', inputFilename],
+});
+await unlink.status();
 
 
 // install requirements with pip
