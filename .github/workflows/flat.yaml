@@ -24,12 +24,12 @@ jobs:
       - name: Fetch data
         uses: githubocto/flat@v3
         with:
-          http_url: https://github.com/statcan/test-flatdata/raw/main/raw/SAMPLE-ESTMA-data.xlsx
+          http_url: https://github.com/statcan/hackathon-ginyu-force-data/raw/main/raw/SAMPLE-ESTMA-data.xlsx
           downloaded_filename: SAMPLE-ESTMA-data.xlsx # The http_url gets saved and renamed in our repository as this file
           postprocess: ./postprocess.ts # A postprocessing javascript or typescript file written in Deno
       - name: Fetch payments
         uses: githubocto/flat@v3
         with:
-          http_url: https://github.com/statcan/test-flatdata/raw/main/raw/System_All_Payments_DataDump.xlsx
+          http_url: https://github.com/statcan/hackathon-ginyu-force-data/raw/main/raw/System_All_Payments_DataDump.xlsx
           downloaded_filename: System_All_Payments_DataDump.xlsx # The http_url gets saved and renamed in our repository as this file
           postprocess: ./postprocess.ts # A postprocessing javascript or typescript file written in Deno
