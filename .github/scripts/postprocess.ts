@@ -24,7 +24,7 @@ await unlink.status();
 
 // install requirements with pip
 const pip_install = Deno.run({
-    cmd: ['python', '-m', 'pip', 'install', '-r', 'requirements.txt'],
+    cmd: ['python', '-m', 'pip', 'install', '-r', '.github/scripts/requirements.txt'],
 });
 
 await pip_install.status();
@@ -33,7 +33,7 @@ console.log("pip install successful");
 
 // Forwards the execution to the python script
 const py_run = Deno.run({
-    cmd: ['python', './postprocess.py'].concat(Deno.args),
+    cmd: ['python', './.github/scripts/postprocess.py'].concat(Deno.args),
 });
 
 await py_run.status();
