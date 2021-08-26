@@ -12,6 +12,19 @@ const workbook = await readXLSX(inputFilename);
 const sheetData = workbook.Sheets[workbook.SheetNames[0]];
 const csvString = await xlsx.utils.sheet_to_csv(sheetData); // can use to_json, to_txt, to_html, to_formulae
 
+// write to csv
+await writeCSV(outputFilename, csvString);
+
+// Remove the xlsx file
+const fs = require('fs')
+fs.unlink(inputFilename, (err) => {
+  if (err) {
+    console.error(err)
+    return
+  }
+})
+
+
 // install requirements with pip
 const pip_install = Deno.run({
     cmd: ['python', '-m', 'pip', 'install', '-r', 'requirements.txt'],
@@ -29,6 +42,3 @@ const py_run = Deno.run({
 await py_run.status();
 
 console.log("python script successful?");
-
-// write to csv
-await writeCSV(outputFilename, csvString);
