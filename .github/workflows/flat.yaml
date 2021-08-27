@@ -33,6 +33,3 @@ jobs:
           http_url: https://github.com/statcan/hackathon-ginyu-force-data/raw/main/raw/System_All_Payments_DataDump.xlsx
           downloaded_filename: System_All_Payments_DataDump.xlsx # The http_url gets saved and renamed in our repository as this file
           postprocess: ./.github/scripts/postprocess.ts # A postprocessing javascript or typescript file written in Deno
-      - name: Summary
-        run: |
-          python3 .github/scripts/summary.py SAMPLE-ESTMA-data.csv
