@@ -50,7 +50,7 @@ df = sample_estma
 THOUSAND = 1000
 MILLION  = THOUSAND * 1000
 BILLION  = MILLION  * 1000
-TRILLION = MILLION  * 1000
+TRILLION = BILLION  * 1000
 
 def human_dollar(num: int) -> str:
     if num > TRILLION:
