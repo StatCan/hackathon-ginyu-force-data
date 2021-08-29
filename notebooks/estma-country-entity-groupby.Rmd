@@ -1,0 +1,147 @@
+---
+title: "ESTMA Payments by Country and Entity"
+author: "Team Ginyu Force"
+date: "2021-08-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(RColorBrewer)
+
+# Nice colours
+if (!require("viridis")) { 
+  install.packages(
+    "viridis",
+    repos = "http://cran.us.r-project.org"
+    )
+}
+library(viridis)
+```
+
+# Get the data
+
+Grab the data straight from github
+
+```{r}
+estma <- read.csv("https://github.com/StatCan/hackathon-ginyu-force-data/raw/main/SAMPLE-ESTMA-data.csv")
+```
+
+Mutate the tables to adjust the column types
+
+```{r}
+# Normalize 
+estma <- estma %>%
+  mutate(period_end_date=mdy(period_end_date)) %>%
+  mutate(period_start_date=mdy(period_start_date)) %>%
+  mutate(amount_reported_cad = as.numeric(gsub(",", "", amount_reported_cad)))
+
+```
+
+A sample record
+
+```{r}
+estma[1,] %>% str
+```
+
+
+## Amount reported by country
+
+```{r}
+by_country <- estma %>%
+  group_by(country) %>%
+  summarise(Amount = sum(amount_reported_cad))
+
+# Remove bottom 5% of the range
+amount_range <- range(by_country$Amount)
+cutoff_percentage = 0.03
+cutoff <- (1 - cutoff_percentage) * amount_range[1] + (cutoff_percentage) * amount_range[2]
+
+by_country_cutoff <- by_country %>%
+  filter(Amount > cutoff) %>%
+  arrange(desc(Amount))
+
+cat(
+  sprintf(" Total countries: %d\n", length(by_country$country)),
+  sprintf("Countries above %f%% of range: %d\n", cutoff_percentage, length(by_country_cutoff$country))
+)
+```
+
+```{r fig.asp = 0.8, fig.width = 7, out.width = "100%"}
+ggplot(data=by_country_cutoff) + geom_col(aes(x=reorder(country, -Amount), y=Amount / 1000000000), fill="blue") + labs(
+  x = "Country (low values filtered out)", y = "Amount reported (Billions CAD)"
+) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(labels = scales::dollar_format())
+```
+
+## Large entities
+
+```{r}
+by_entity <- estma %>% 
+    group_by(entity) %>% 
+    summarise(Amount = sum(amount_reported_cad))
+
+cat(sprintf("Number of entities: %d\n", length(by_entity$entity)))
+```
+
+```{r, out.width = "100%"}
+hist(
+  main="Distribution of entity payment (orders of magnitude)", 
+  log10(by_entity$Amount), breaks = seq(0, ceiling(max(log10(by_entity$Amount))), by = 0.5)
+)
+```
+
+How much is contributed to the total amount per quantile?
+
+```{r}
+total = sum(by_entity$Amount)
+
+num_quantiles <- 100
+per_quantile <- by_entity %>% 
+  mutate(quantile = ntile(by_entity$Amount, num_quantiles)) %>%
+  group_by(quantile) %>%
+  summarise(Amount = sum(Amount) / total)
+```
+
+### How much does each quantile contribute in terms of total share?
+
+```{r}
+# Map the quantiles to a colour
+colours <- viridis_pal(option = "D")(num_quantiles)
+colours <- sample(colours) # shuffle
+quantile_colours = list()
+for (i in 1:num_quantiles) {
+  quantile_colours[[i]] = colours[[i]]
+}
+
+ggplot(data=per_quantile %>% filter(Amount > 0.001)) +
+  geom_col(aes(x=quantile, y=Amount), fill="blue") +
+  ggtitle(sprintf("Entity quantiles (n = %d) as portion of total amount", num_quantiles)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(x = sprintf("Quantile (n = %d)", num_quantiles) , y = "% of total")
+```
+
+
+
+```{r}
+ggplot(data=per_quantile) +
+  geom_bar(aes(y="", x=Amount, fill=quantile_colours), position="stack", stat="identity") + 
+  ggtitle(sprintf("Entity quantiles (n = %d) as portion of total amount", num_quantiles)) +
+  labs(x = "Dollar contribution per quantile", y = "")
+```
+
+As you can see, the top 1% of entities account for more than 60% of the total amount paid.
+
+### Top payees
+
+```{r}
+by_entity %>% arrange(desc(Amount)) %>%
+  head(n=10) %>% 
+  mutate(Amount = sprintf("%.1f B", Amount / 10^9))
+```
+
