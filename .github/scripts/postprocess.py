@@ -6,44 +6,18 @@ from os import makedirs
 from datetime import datetime
 import json
 import sys
-
 from os.path import exists
 
 
+PATH_ESTMA_PAYMENTS = "estma-payments.csv"
+PATH_JSON_SUMMARY = "summary.jsonfile" # Weird extension: ignored by flat viewer
 
-ESTMA_PATH = "SAMPLE-ESTMA-data.csv"
-ALL_PAYMENTS_PATH = "System_All_Payments_DataDump.csv"
-OUTFILE="data/estma_gb_3.csv"
+if not exists(PATH_ESTMA_PAYMENTS):
+    sys.exit(1)
 
-if not exists(ESTMA_PATH):
-    sys.exit(0)
-
-sample_estma = pd.read_csv(ESTMA_PATH, thousands=",")
-    
-#makedirs('data', exist_ok=True)
-#
-#
-#component_17 = sample_estma[["entity", "country", "period_start_date", "payment_category", "amount_reported_cad"]]
-#component_17["count"] = 1
-#
-#component_17 = component_17.groupby(["entity", "country", "period_start_date", "payment_category"]).agg({
-#    "count": "count",
-#    "amount_reported_cad": "sum"
-#}).reset_index()
-#
-#component_17.to_csv(OUTFILE)
-
-
-###############################
-### Clean up data locations
-###############################
-
-print("Generating Summary")
+df = pd.read_csv(PATH_ESTMA_PAYMENTS)
 
 today = datetime.today()
-
-df = sample_estma
-#df = pd.read_csv(sys.argv[1], thousands=',')
 
 # If we only want one year?
 # df = df.loc[df['period_start_date'].str.endswith('19')]
@@ -74,6 +48,5 @@ d = {
     'estma_payees': df['payee_project_name'].nunique()
 }
 
-print("Writing summary.jsonfile")
 with open('summary.jsonfile','w') as f:
-    f.write(json.dumps(d, indent=4))
+    f.write(json.dumps(d, indent=2))

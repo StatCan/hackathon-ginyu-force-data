@@ -1,41 +1,76 @@
-// Helper library written for useful postprocessing tasks with Flat Data
-// Has helper functions for manipulating csv, txt, json, excel, zip, and image files
-import { xlsx, readXLSX, writeCSV } from "https://deno.land/x/flat@0.0.11/mod.ts";
+// `xlsx` is SheetJS: https://github.com/SheetJS/sheetjs
+import {
+  readXLSX,
+  writeCSV,
+  xlsx,
+} from "https://deno.land/x/flat@0.0.11/mod.ts";
+import { datetime } from "https://deno.land/x/ptera/mod.ts";
+
+const col = Object.freeze({
+  id: "estma_id",
+  entity: "entity",
+  jurisdiction: "jurisdiction",
+  period_start: "period_start_date",
+  period_end: "period_end_date",
+  reporting_cycle: "reporting_cycle",
+  country: "country",
+  payee_project_name: "payee_project_name",
+  payee_or_project: "payee_or_project",
+  payment_category: "payment_category",
+  amount: "amount_reported_cad",
+  link: "web_link",
+  type_of_report: "type_of_report",
+});
+const oldCol: Partial<typeof col> = Object.freeze({
+  reporting_cycle: "reporting_cylce",
+  link: "web_Link",
+});
+
+const EXCEL_REF_DATE = datetime("1899-12-30");
+function excelDateToIso(excelInt: number) {
+  return EXCEL_REF_DATE.add({ day: excelInt }).toISODate();
+}
 
 // Get the downloaded_filename as the first argument
 const inputFilename = Deno.args[0];
 const outputFilename = inputFilename.replace(".xlsx", ".csv");
 
-// read about what the xlsx library can do here: https://github.com/SheetJS/sheetjs
-
 const workbook = await readXLSX(inputFilename);
 const sheetData = workbook.Sheets[workbook.SheetNames[0]];
-const csvString = await xlsx.utils.sheet_to_csv(sheetData); // can use to_json, to_txt, to_html, to_formulae
+const rows: any = xlsx.utils.sheet_to_json(sheetData);
 
-// write to csv
-await writeCSV(outputFilename, csvString);
+// Do processing
+for (const row of rows) {
+  // Rename columns
+  for (const [key, oldName] of Object.entries(oldCol)) {
+    if (row.hasOwnProperty(oldName)) {
+      row[col[key as keyof typeof col]] = row[oldName];
+      delete row[oldName];
+    }
+  }
 
-// unlink the file
-const unlink = Deno.run({
-    cmd: ['rm', inputFilename],
-});
-await unlink.status();
+  // Convert Excel date integers to ISO strings
+  row[col.period_start] = excelDateToIso(row[col.period_start]);
+  row[col.period_end] = excelDateToIso(row[col.period_end]);
+}
 
+await writeCSV(outputFilename, rows);
 
-// install requirements with pip
 const pip_install = Deno.run({
-    cmd: ['python', '-m', 'pip', 'install', '-r', '.github/scripts/requirements.txt'],
+  cmd: [
+    "python",
+    "-m",
+    "pip",
+    "install",
+    "-r",
+    ".github/scripts/requirements.txt",
+  ],
 });
-
 await pip_install.status();
 
-console.log("pip install successful");
-
-// Forwards the execution to the python script
-const py_run = Deno.run({
-    cmd: ['python', './.github/scripts/postprocess.py'].concat(Deno.args),
+const pyRun = Deno.run({
+  cmd: ["python", "./.github/scripts/postprocess.py"].concat(Deno.args),
 });
+await pyRun.status();
 
-await py_run.status();
-
-console.log("python script successful?");
+Deno.removeSync(inputFilename);
