@@ -1,10 +1,38 @@
-# Test github flatdata
+_⚠ This repository is for the purpose of a hackathon. Please **do not** rely on
+its contents or treat it as an official data source._
 
-Based on https://github.com/githubocto/flat-demo-xlsx
+# ESTMA Open Data Repository
 
+> **🛈 Just looking for the data?**
+>
+> It's all in `estma-payments.csv` at the root of this repository. Have fun! 🚀
 
-## summary.jsonfile
+The Extractive Sector Transparency Measures Act helps the Government of Canada
+deter corruption in the extractive sector. Extractive entities — oil, gas, and
+mining businesses — that are active in Canada must publicly disclose certain
+types of payments made to governments in Canada and abroad.
 
-The file suffix is `jsonfile` so that the flatdata viewer doesn't advertise it.
+This repository contains that payments data (see `estma-payments.csv`) – as well
+as some notebooks (see `notebooks/`) that analyze it – that you can use freely
+for analysis.
 
-The file is generated from `.github/scripts/postprocess.py`, and can be customized there. The values show up [here](https://statcan.github.io/hackathon-ginyu-force/index-en.html)
+## Using the Data
+
+You can [**check out our website**][website] to learn about all the different
+ways you can interact with and analyze the open ESTMA data.
+
+* [Visualize and modify basic breakdowns on the website][website]
+* [View and filter the microdata using GitHub Flat Viewer][flat]
+* [Level up your analysis with the Advanced Analytics Workspace][aaw]
+
+## Why the Weird Extension on `summary.jsonfile`?
+
+The `summary.jsonfile` is just a few lines of JSON that provide the data for high
+level indicators on [the website][website]. It isn't intended for human consumption.
+
+The GitHub Flat Viewer is hard-coded to list all JSON files in the repository, no
+matter what. So we change the extension so it doesn't show up in that tool. 😎
+
+[website]: https://statcan.github.io/hackathon-ginyu-force/index-en.html
+[flat]: https://statcan.github.io/hackathon-ginyu-force/assets/flat-viewer.png
+[aaw]: https://analytics-platform.statcan.gc.ca/covid19
