@@ -34,5 +34,5 @@ The GitHub Flat Viewer is hard-coded to list all JSON files in the repository, n
 matter what. So we change the extension so it doesn't show up in that tool. 😎
 
 [website]: https://statcan.github.io/hackathon-ginyu-force/index-en.html
-[flat]: https://statcan.github.io/hackathon-ginyu-force/assets/flat-viewer.png
+[flat]: https://flatgithub.com/StatCan/hackathon-ginyu-force-data?filename=estma-payments.csv
 [aaw]: https://analytics-platform.statcan.gc.ca/covid19
