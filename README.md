@@ -25,7 +25,11 @@ ways you can interact with and analyze the open ESTMA data.
 * [View and filter the microdata using GitHub Flat Viewer][flat]
 * [Level up your analysis with the Advanced Analytics Workspace][aaw]
 
-![Open ESTMA Data website][website-image]
+<p align="center">
+  <a href="https://statcan.github.io/hackathon-ginyu-force/index-en.html">
+    <img src="notebooks/.screenshots/website.png"/>
+  </a>
+</p>
 
 ## Why the Weird Extension on `summary.jsonfile`?
 
