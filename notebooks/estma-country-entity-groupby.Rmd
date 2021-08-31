@@ -30,7 +30,7 @@ library(viridis)
 Grab the data straight from github
 
 ```{r}
-estma <- read.csv("https://github.com/StatCan/hackathon-ginyu-force-data/raw/main/SAMPLE-ESTMA-data.csv")
+estma <- read.csv("https://github.com/StatCan/hackathon-ginyu-force-data/raw/main/estma-payments.csv")
 ```
 
 Mutate the tables to adjust the column types
@@ -137,7 +137,7 @@ ggplot(data=per_quantile) +
 
 As you can see, the top 1% of entities account for more than 60% of the total amount paid.
 
-### Top payees
+### Greatest total payments
 
 ```{r}
 by_entity %>% arrange(desc(Amount)) %>%
