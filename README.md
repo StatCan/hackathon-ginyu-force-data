@@ -25,6 +25,8 @@ ways you can interact with and analyze the open ESTMA data.
 * [View and filter the microdata using GitHub Flat Viewer][flat]
 * [Level up your analysis with the Advanced Analytics Workspace][aaw]
 
+![Open ESTMA Data website][website-image]
+
 ## Why the Weird Extension on `summary.jsonfile`?
 
 The `summary.jsonfile` is just a few lines of JSON that provide the data for high
@@ -36,3 +38,4 @@ matter what. So we change the extension so it doesn't show up in that tool. 😎
 [website]: https://statcan.github.io/hackathon-ginyu-force/index-en.html
 [flat]: https://flatgithub.com/StatCan/hackathon-ginyu-force-data?filename=estma-payments.csv
 [aaw]: https://analytics-platform.statcan.gc.ca/covid19
+[website-image]: notebooks/.screenshots/website.png
